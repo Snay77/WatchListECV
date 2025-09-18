@@ -38,7 +38,7 @@
                                 <img src="https://image.tmdb.org/t/p/w500/.{{ $movie->poster_path }}" alt="">
                                 <span class="shadow"></span>
                                 <div class="content">
-                                    <h3> {{ $movie->title }} </h3>
+                                    <h2> {{ $movie->title }} </h2>
                                     <p class="date"> {{ $movie->release_date }}</p>
                                     <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span></p>
                                     <div class="hex-tag">
@@ -92,7 +92,7 @@
                                 <img src="https://image.tmdb.org/t/p/w500/.{{ $movie->poster_path }}" alt="">
                                 <span class="shadow"></span>
                                 <div class="content">
-                                    <h3> {{ $movie->title }} </h3>
+                                    <h2> {{ $movie->title }} </h2>
                                     <p class="date"> {{ $movie->release_date }}</p>
                                     <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span></p>
                                     <div class="hex-tag">

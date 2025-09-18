@@ -159,15 +159,16 @@ body {
 }
 
 .movie-btn:hover {
-    background-color: #1a3a70;      /* teinte plus claire */
-    border-color: #4da3ff;          /* liseré lumineux */
-    box-shadow: 0 0 20px #4da3ff;   /* halo brillant */
-    transform: translateY(-3px) scale(1.05); /* petit soulèvement */
+    background-color: #1a3a70;
+    border-color: #4da3ff;
+    box-shadow: 0 0 20px #4da3ff;
+    transform: translateY(-3px) scale(1.05);
 }
 
 .movie-btn:active {
-    transform: translateY(-1px) scale(0.98); /* effet clic */
+    transform: translateY(-1px) scale(0.98);
     box-shadow: 0 0 10px #4da3ff;
+
 }
 
 .click-card {

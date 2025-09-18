@@ -12,18 +12,19 @@
 
 <body>
     <div>
+        <p>MovieList</p>
         <nav>
-            <a href="/">Accueil</a>
+            <a href="{{ Route('home')}}">Accueil</a>
             <a href="{{ Route('movie.get', 'popular') }}">Films Populaires</a>
             <a href="{{ Route('movie.get', 'top_rated') }}">Top Films</a>
             <a href="{{ Route('movie.index', 'index') }}">Voir tout les Films</a>
         </nav>
+        <form action="{{ Route('movie.search') }}" method="GET">
+            @csrf
+            <input type="text" name="search" placeholder="Rechercher un film">
+            <input type="submit" value="Rechercher">
+        </form>
     </div>
-    <form action="{{ Route('movie.search') }}" method="GET">
-        @csrf
-        <input type="text" name="search" placeholder="Rechercher un film">
-        <input type="submit" value="Rechercher">
-    </form>
     <div id="app">
         @yield('content')
     </div>

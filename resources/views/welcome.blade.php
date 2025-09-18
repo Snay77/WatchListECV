@@ -34,7 +34,7 @@
                                 src="{{ Storage::url($movie->image) }}" alt="">
                             <span class="shadow"></span>
                             <div class="content">
-                                <h3> {{ $movie->name }} </h3>
+                                <h2> {{ $movie->name }} </h2>
                                 {{-- <p> {{ $movie->genres->name }}</p> --}}
                                 <p class="date"> {{ $movie->release_date }}</p>
                                 <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span>
