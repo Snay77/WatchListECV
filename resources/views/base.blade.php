@@ -12,22 +12,48 @@
 
 <body>
     <div>
-        <p>MovieList</p>
-        <nav>
-            <a href="{{ Route('home')}}">Accueil</a>
-            <a href="{{ Route('movie.get', 'popular') }}">Films Populaires</a>
-            <a href="{{ Route('movie.get', 'top_rated') }}">Top Films</a>
-            <a href="{{ Route('movie.index', 'index') }}">Voir tout les Films</a>
-        </nav>
-        <form action="{{ Route('movie.search') }}" method="GET">
-            @csrf
-            <input type="text" name="search" placeholder="Rechercher un film">
-            <input type="submit" value="Rechercher">
-        </form>
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="logo-3d" aria-label="MovieList">
+                    <span class="logo-front">MovieList</span>
+                    <span class="neon-ring" aria-hidden="true"></span>
+                    <span class="neon-ring second" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="header-right">
+                <nav>
+                    <a href="{{ Route('home')}}">Accueil</a>
+                    <a href="{{ Route('movie.get', 'popular') }}">Films Populaires</a>
+                    <a href="{{ Route('movie.get', 'top_rated') }}">Top Films</a>
+                    <a href="{{ Route('movie.index', 'index') }}">Voir tout les Films</a>
+                </nav>
+                <form action="{{ Route('movie.search') }}" method="GET">
+                    @csrf
+                    <input type="text" name="search" placeholder="Rechercher un film">
+                    <input type="submit" value="Rechercher">
+                </form>
+            </div>
+        </div>
     </div>
     <div id="app">
         @yield('content')
     </div>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="logo-3d" aria-label="MovieList">
+                <span class="logo-front">MovieList</span>
+                <span class="neon-ring" aria-hidden="true"></span>
+                <span class="neon-ring second" aria-hidden="true"></span>
+            </div>
+            <div class="footer-nav">
+                <a href="{{ Route('home') }}">Accueil</a>
+                <a href="{{ Route('movie.get', 'popular') }}">Populaires</a>
+                <a href="{{ Route('movie.get', 'top_rated') }}">Top</a>
+                <a href="{{ Route('movie.index', 'index') }}">Tous les films</a>
+            </div>
+            <p class="copyright">© {{ date('Y') }} MovieList — All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

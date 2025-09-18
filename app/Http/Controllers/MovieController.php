@@ -38,11 +38,16 @@ class MovieController extends Controller
         return view('movies.list', [
             'movies_data' => $movies_data,
             'page_title' => 'Résultats de la recherche',
+            'type' => 'search',
         ]);
     }
 
     public function getMovies(Request $request, $type)
     {
+        $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
+        // dd($genres_data);
+
+
         $type_name = [
             'popular' => 'Film populaire',
             'top_rated' => 'Film les mieux notés',
@@ -52,7 +57,6 @@ class MovieController extends Controller
 
             $page = $request->query('page', 1);
             $movies_data = $this->getCurlData("/movie/popular?language=fr-FR&page={$page}");
-
         } elseif ($type === 'top_rated') {
             $allMovies = [];
             $page = 1;
@@ -67,6 +71,7 @@ class MovieController extends Controller
                 'results' => array_slice($allMovies, 0, 100),
                 'page' => 1,
                 'total_pages' => 1,
+                
             ];
         }
 
@@ -74,6 +79,7 @@ class MovieController extends Controller
             'movies_data' => $movies_data,
             'page_title'  => $type_name[$type],
             'type'        => $type,
+            'genres_data' => $genres_data,
         ]);
     }
 
@@ -120,7 +126,6 @@ class MovieController extends Controller
         if ($request->has('movie_id') && $request->input('movie_id') > 0) {
             $movie_data = $this->getCurlData('/movie/' . $request->input('movie_id') . '?language=fr-FR');
             $actors_data = $this->getCurlData('/movie/' . $request->input('movie_id') . '/credits?language=fr-FR');
-            // dd($movie_data);
             if (isset($movie_data->poster_path)) {
                 $path = 'poster/' . $movie_data->id . '.jpg';
                 $response = Http::get('https://image.tmdb.org/t/p/w500/' . $movie_data->poster_path);
@@ -133,6 +138,7 @@ class MovieController extends Controller
             $movie->vote_average = $movie_data->vote_average;
             $movie->release_date = $movie_data->release_date;
             $movie->image = $path;
+            $movie->desc = $movie_data->overview;
             $movie->save();
 
             if (isset($movie_data->genres)) {
@@ -154,6 +160,7 @@ class MovieController extends Controller
                         'id_casts_tmdb' => $tmdb_cast->id,
                         'name' => $tmdb_cast->name,
                         'image' => $tmdb_cast->profile_path,
+                        'pseudo' => $tmdb_cast->character,
                     ]);
                     $movie->casts()->attach($cast->id);
                 }

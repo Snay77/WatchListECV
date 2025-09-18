@@ -14,6 +14,7 @@ class Cast extends Model
         'id_casts_tmdb',
         'name',
         'image',
+        'pseudo',
     ];
 
     public function movies(): BelongsToMany {

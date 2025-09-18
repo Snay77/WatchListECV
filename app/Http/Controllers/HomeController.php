@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function getList(Request $request) {
         // $list_data = Movie::all();
-        $genres = Genre::without('movies')->get();
+        $genres = Genre::withCount('movies')->get();
 
         $query = Movie::where('seen', 0)->with('genres');
 

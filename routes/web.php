@@ -24,18 +24,17 @@ use App\Http\Controllers\MovieController;
 // Route::post('/', [MovieController::class, 'popular_movies']);
 
 
-Route::controller(MovieController::class)->prefix('/movie')->name('movie.')->group(function () { // on peut mettre ->prefix('/movie') avant le groupe | on peut aussi mettre ->name('blabla.')
+Route::controller(MovieController::class)->prefix('/movies')->name('movie.')->group(function () { // on peut mettre ->prefix('/movie') avant le groupe | on peut aussi mettre ->name('blabla.')
     // Route::get('popular', 'getPopular')->name('popular'); // name('') et après {{ Route('') }}
     Route::post('store', 'storeMovie')->name('store');
     Route::post('seen', 'setMovieSeen')->name('seen');
 
     Route::get('search', 'getSearch')->name('search');
     Route::get('list/{type}', 'getMovies')->name('get');
-    Route::get ('{type}', 'getMovie')->name('movie');
-    
+    Route::get ('/movie/{type}', 'getMovie')->name('movie');
+
     Route::delete('/delete/{movie}', 'deleteMovie')->name('delete');
 
-    // Gestion
     Route::get('/index', 'index')->name('index');
 });
 

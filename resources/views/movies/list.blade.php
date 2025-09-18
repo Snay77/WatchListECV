@@ -41,7 +41,11 @@
                                     <h2> {{ $movie->title }} </h2>
                                     <p class="date"> {{ $movie->release_date }}</p>
                                     <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span></p>
+                                    <div class="simu-tag"></div>
                                     <div class="hex-tag">
+                                        @php
+
+                                        @endphp
                                         @foreach ($movie->genre_ids as $genre)
                                             <div class="tag">
                                                 {{ $genre }}
@@ -60,27 +64,6 @@
                 </section>
             @endif
         @else
-
-            {{-- @if ($movies_data->results)
-            <section class="box-movies">
-                @foreach ($movies_data->results as $movie)
-                <div class="box-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/.{{ $movie->poster_path }}" alt="">
-                    <p> {{ $movie->title }}</p>
-
-                    <p>{{ $movie->id }}</p>
-
-                    <form action="{{ Route('movie.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="movie_id" value="{{ $movie->id }}">
-                        <input type="submit" name="save_movie" value="Ajouter à ma liste">
-                    </form>
-                </div>
-
-                @endforeach
-            </section>
-            @endif --}}
-
             @if ($movies_data->results)
                 @php
                     $nbr = 1;
@@ -95,18 +78,21 @@
                                     <h2> {{ $movie->title }} </h2>
                                     <p class="date"> {{ $movie->release_date }}</p>
                                     <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span></p>
-                                    <div class="hex-tag">
+                                    <div class="simu-tag"></div>
+                                    {{-- <div class="hex-tag">
                                         @foreach ($movie->genre_ids as $genre)
-                                            <div class="tag">
-                                                {{ $genre }}
-                                            </div>
+                                        <div class="tag">
+                                            {{ $genre }}
+                                        </div>
                                         @endforeach
-                                    </div>
+                                    </div> --}}
                                     <form class="form-flex" action="{{ Route('movie.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="movie_id" value="{{ $movie->id }}">
                                         <button class="movie-btn" type="submit" name="save_movie">Ajouter à ma liste</button>
-                                        <p>N°{{ $nbr }}</p>
+                                        @if ($type === 'top_rated')
+                                            <p>N°{{ $nbr }}</p>
+                                        @endif
                                     </form>
                                     @php
                                         $nbr = $nbr + 1;

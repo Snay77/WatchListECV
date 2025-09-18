@@ -2,47 +2,35 @@
 
 @section('content')
 
+
+    <h1>Liste des films</h1>
     @if ($movies_data)
-
-        <section class="box-movies">
-
-            <table>
-
-                <head>
-                    <tr>
-                        <th>
-
-                        </th>
-                        <th>
-
-                        </th>
-                    </tr>
-                </head>
-                <tbody>
-                    <tr>
-                        @foreach ($movies_data as $movie)
-                            <td>
-                                <img src="https://image.tmdb.org/t/p/w500/.{{ $movie->poster_path }}" alt="">
-                            </td>
-                            <td>
-                                {{ $movie->id }}
-                            </td>
-                            <td>
-                                {{ $movie->name }}
-                            </td>
-                            <td>
-                                <form action="{{ Route('movie.delete', $movie->id) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="submit" value="Supprimer">
-                                </form>
-                            </td>
-                        @endforeach
-
-                    </tr>
-                </tbody>
-            </table>
-
+        <section class="movies-box">
+            @foreach ($movies_data as $movie)
+                <div class="movie-card">
+                    <div class="content-card">
+                        <form class="form-index-delete" action="{{ Route('movie.delete', $movie->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="movie-btn movie-btn--danger delete-btn" type="submit" title="Supprimer">✕</button>
+                        </form>
+                        <a class="click-card" href="{{ Route('movie.movie', $movie->id) }}">
+                            <img src="{{ Storage::url($movie->image) }}" alt="">
+                            <span class="shadow"></span>
+                            <div class="content">
+                                <h2> {{ $movie->name }} </h2>
+                                <p class="date"> {{ $movie->release_date }}</p>
+                                <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i></p>
+                                <div class="hex-tag">
+                                    @foreach ($movie->genres as $genre)
+                                        <div class="tag">{{ $genre->name }}</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            @endforeach
         </section>
 
     @endif

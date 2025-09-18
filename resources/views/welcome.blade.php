@@ -19,7 +19,7 @@
             <option value="">Sélectionner votre genre</option>
             @foreach ($genres as $genre)
                 <option value="{{ $genre->id }}" {{ $selected_genre == $genre->id ? 'selected' : '' }}>
-                    {{ $genre->name }} 
+                    {{ $genre->name }} ({{ $genre->movies_count }})
                 </option>
             @endforeach
         </select>
@@ -30,8 +30,8 @@
             <div class="movie-card">
                 {{-- < ?php dd($movie)?> --}}
                     <div class="content-card">
-                        <a class="click-card" href="{{ Route('movie.movie', $movie->id) }}"><img
-                                src="{{ Storage::url($movie->image) }}" alt="">
+                        <a class="click-card" href="{{ Route('movie.movie', $movie->id) }}">
+                            <img src="{{ Storage::url($movie->image) }}" alt="">
                             <span class="shadow"></span>
                             <div class="content">
                                 <h2> {{ $movie->name }} </h2>

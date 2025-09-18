@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('id_movie_tmdb')->nullable();
             $table->string('name')->nullable();
+            $table->text('desc')->nullable();
             $table->string('image')->nullable();
             $table->boolean('seen')->default(0);
             $table->integer('vote_average')->nullable();
@@ -41,6 +42,7 @@ return new class extends Migration
             $table->integer('id_casts_tmdb')->nullable();
             $table->string('name')->nullable();
             $table->string('image')->nullable();
+            $table->string('pseudo')->nullable();
             $table->timestamps();
         });
 
