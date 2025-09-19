@@ -232,6 +232,7 @@ select#genre_id option {
 
 .movies-box {
     margin-top: 48px;
+    margin-bottom: 92px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);
     gap: 120px;
@@ -411,6 +412,11 @@ select#genre_id option {
 }
 
 /* Fin Card */
+
+.pagination {
+    display: flex;
+    gap: 20px;
+}
 
 /* Variantes de formulaire dans les cards */
 .form-index .movie-btn {

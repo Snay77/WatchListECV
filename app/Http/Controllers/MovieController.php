@@ -44,6 +44,8 @@ class MovieController extends Controller
 
     public function getMovies(Request $request, $type)
     {
+        // $series_data = $this->getCurlData("/movie/8452?language=fr-FR&page=1");
+        // dd($series_data);
         $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
         // dd($genres_data);
 

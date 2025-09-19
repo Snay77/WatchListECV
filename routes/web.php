@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\SerieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,20 @@ Route::controller(MovieController::class)->prefix('/movies')->name('movie.')->gr
     Route::delete('/delete/{movie}', 'deleteMovie')->name('delete');
 
     Route::get('/index', 'index')->name('index');
+});
+
+Route::controller(SerieController::class)->prefix('/series')->name('serie.')->group(function () { // on peut mettre ->prefix('/movie') avant le groupe | on peut aussi mettre ->name('blabla.')
+    // Route::get('popular', 'getPopular')->name('popular'); // name('') et après {{ Route('') }}
+    Route::post('store', 'storeMovie')->name('store');
+    // Route::post('seen', 'setSerieSeen')->name('seen');
+
+    // Route::get('search', 'getSearch')->name('search');
+    Route::get('list/{type}', 'getSeries')->name('get');
+    // Route::get ('/serie/{type}', 'getSerie')->name('serie');
+
+    // Route::delete('/delete/{serie}', 'deleteSerie')->name('delete');
+
+    // Route::get('/index', 'index')->name('index');
 });
 
 Route::get('/', [HomeController::class, 'getList'])->name('home');

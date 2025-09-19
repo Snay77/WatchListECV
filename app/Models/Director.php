@@ -16,7 +16,7 @@ class Director extends Model
         'image',
     ];
 
-    public function movies(): BelongsToMany {
+    public function titles(): BelongsToMany {
         return $this->belongsToMany(Movie::class);
     }
 }

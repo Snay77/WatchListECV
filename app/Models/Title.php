@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Movie extends Model
+class Title extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Movie extends Model
     }
 
     public function casts(): BelongsToMany {
-        return $this->belongsToMany(Cast::class);
+        return $this->belongsToMany(Actor::class);
     }
     
     public function directors(): BelongsToMany {
