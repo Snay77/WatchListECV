@@ -18,7 +18,7 @@ class HomeController extends Controller
 
         if ($request->has('genre_id') && $request->genre_id != '') {
         $query->whereHas('genres', function($q) use ($request) {
-            $q->where('id', $request->genre_id);
+            $q->where('genres.id', $request->genre_id);
         });
     }
     $movies = $query->get();

@@ -19,7 +19,7 @@
             <option value="">Sélectionner votre genre</option>
             @foreach ($genres as $genre)
                 <option value="{{ $genre->id }}" {{ $selected_genre == $genre->id ? 'selected' : '' }}>
-                    {{ $genre->name }} ({{ $genre->movies_count }})
+                    {{ $genre->name }} ({{ $genre->titles_count }})
                 </option>
             @endforeach
         </select>
