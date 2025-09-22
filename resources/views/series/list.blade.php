@@ -49,10 +49,10 @@
                                         </div>
                                         @endforeach
                                     </div>
-                                    <form action="{{ Route('serie.store') }}" method="POST">
+                                    <form action="{{ Route('store', ['type' => 'tv']) }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="serie_id" value="{{ $serie->id }}">
-                                        <button class="movie-btn" type="submit" name="save_serie">Ajouter à ma liste</button>
+                                        <input type="hidden" name="title_id" value="{{ $serie->id }}">
+                                        <button class="movie-btn" type="submit" name="save_title">Ajouter à ma liste</button>
                                     </form>
                                 </div>
                             </div>
@@ -83,10 +83,10 @@
                                         </div>
                                         @endforeach
                                     </div>
-                                    <form class="form-flex" action="{{ Route('serie.store') }}" method="POST">
+                                    <form class="form-flex" action="{{ Route('store', ['type' => 'tv']) }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="serie_id" value="{{ $serie->id }}">
-                                        <button class="movie-btn" type="submit" name="save_serie">Ajouter à ma liste</button>
+                                        <input type="hidden" name="title_id" value="{{ $serie->id }}">
+                                        <button class="movie-btn" type="submit" name="save_title">Ajouter à ma liste</button>
                                         @if ($type === 'top_rated')
                                             <p>N°{{ $nbr }}</p>
                                         @endif

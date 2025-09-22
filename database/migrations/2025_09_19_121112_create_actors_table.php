@@ -15,9 +15,11 @@ return new class extends Migration
 
         Schema::create('actors', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_actor_tmdb');
+            $table->bigInteger('id_actor_tmdb')->nullable();
             $table->string('name');
-            $table->string('profile_path');
+            $table->string('image')->nullable();
+            $table->string('pseudo');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

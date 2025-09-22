@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('id_genre_tmdb');
             $table->string('name');
+            $table->timestamps();
         });
     }
 

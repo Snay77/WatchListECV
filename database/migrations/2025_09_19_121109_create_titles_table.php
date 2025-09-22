@@ -17,13 +17,14 @@ return new class extends Migration
             $table->boolean('is_movie')->default(true);
             $table->string('name');
             $table->text('desc');
-            $table->string('tagline');
-            $table->string('image');
+            $table->string('tagline')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('seen')->default(0);
             $table->date('release_date');
             $table->float('vote_average');
             $table->string('origin_country')->nullable();
             $table->time('duration')->nullable();
+            $table->timestamps();
         });
     }
 

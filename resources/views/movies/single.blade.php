@@ -13,7 +13,7 @@
         $genres = $movie_data->genres ?? [];
         $directors = $movie_data->directors ?? [];
         $director = collect($directors)->first();
-        $casts = collect($movie_data->casts ?? [])->take(5);
+        $casts = collect($movie_data->casts ?? [])->take(9);
         $overview = $movie_data->desc ?? $movie_data->overview ?? null;
     @endphp
 
@@ -106,5 +106,63 @@
             </div>
         @endif
     </section>
+
+    @php
+        $isSeries = isset($movie_data->is_movie) ? !$movie_data->is_movie : false;
+        $episodes = collect($movie_data->episodes ?? []);
+        $episodesBySeason = $episodes->groupBy(function($ep){
+            return is_object($ep) ? ($ep->season ?? 0) : ($ep['season'] ?? 0);
+        })->sortKeys();
+    @endphp
+    @if($isSeries && $episodesBySeason->isNotEmpty())
+        <section class="single-seasons">
+            <div class="seasons-inner">
+                <h2 class="seasons-title">Saisons & Épisodes</h2>
+                <div class="seasons-accordion">
+                    @foreach ($episodesBySeason as $seasonNumber => $seasonEpisodes)
+                        @php $seasonLabel = 'Saison ' . (string)$seasonNumber; @endphp
+                        <details class="season">
+                            <summary>
+                                <span class="season-badge">S{{ str_pad((string)($seasonNumber ?? 0), 2, '0', STR_PAD_LEFT) }}</span>
+                                <span class="season-title">{{ $seasonLabel }}</span>
+                                <span class="season-arrow" aria-hidden="true"></span>
+                            </summary>
+                            @if($seasonEpisodes && $seasonEpisodes->count())
+                                <div class="episode-list">
+                                    @foreach ($seasonEpisodes as $episode)
+                                        @php
+                                            $epName = is_object($episode) ? ($episode->name ?? 'Épisode') : ($episode['name'] ?? 'Épisode');
+                                            $epOverview = is_object($episode) ? ($episode->overview ?? null) : ($episode['overview'] ?? null);
+                                            $epRuntime = is_object($episode) ? ($episode->duration ?? null) : ($episode['duration'] ?? null);
+                                            $epImg = is_object($episode) ? ($episode->image ?? null) : ($episode['image'] ?? null);
+                                            if($epImg && !\Illuminate\Support\Str::startsWith($epImg, 'http')) {
+                                                $epImg = 'https://image.tmdb.org/t/p/w300' . (\Illuminate\Support\Str::startsWith($epImg, '/') ? $epImg : '/' . $epImg);
+                                            }
+                                        @endphp
+                                        <div class="episode-card">
+                                            @if($epImg)
+                                                <div class="episode-media">
+                                                    <img src="{{ $epImg }}" alt="{{ $epName }}">
+                                                </div>
+                                            @endif
+                                            <div class="episode-content">
+                                                <h3 class="episode-title">{{ $epName }}</h3>
+                                                @if($epRuntime)
+                                                    <p class="episode-meta">Durée: {{ is_string($epRuntime) ? $epRuntime : ($epRuntime . ' min') }}</p>
+                                                @endif
+                                                @if($epOverview)
+                                                    <p class="episode-overview">{{ $epOverview }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </details>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
 @endsection

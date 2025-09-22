@@ -15,9 +15,10 @@ return new class extends Migration
 
         Schema::create('directors', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_director_tmdb');
+            $table->bigInteger('id_director_tmdb')->nullable();
             $table->string('name');
-            $table->string('profile_path');
+            $table->string('image')->nullable();
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

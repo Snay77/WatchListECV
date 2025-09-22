@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
+        // Schema::create('genre_title', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->bigInteger('genre_id');
+        //     $table->foreign('genre_id')->references('id')->on('genres');
+        //     $table->bigInteger('title_id');
+        //     $table->foreign('title_id')->references('id_title')->on('titles');
+        // });
         Schema::create('genre_title', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('genre_id');
-            $table->foreign('genre_id')->references('id')->on('genres');
-            $table->bigInteger('title_id');
-            $table->foreign('title_id')->references('id_title')->on('titles');
+            $table->foreignId('genre_id')->constrained('genres')->cascadeOnDelete();
+            $table->foreignId('title_id')->constrained('titles')->cascadeOnDelete();
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

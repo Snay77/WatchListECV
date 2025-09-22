@@ -25,12 +25,12 @@
                     <a href="{{ Route('home')}}">Accueil</a>
                     <a href="{{ Route('movie.get', 'popular') }}">Films Populaires</a>
                     <a href="{{ Route('movie.get', 'top_rated') }}">Top Films</a>
-                    <a href="{{ Route('movie.index', 'index') }}">Voir tout les Films</a>
+                    <a href="{{ Route('movie.index', 'index') }}">Voir tout les Films et Séries</a>
                     <a href="{{ Route('serie.get', 'popular') }}">Séries Populaires</a>
                     <a href="{{ Route('serie.get', 'top_rated') }}">Top Séries</a>
                     {{-- <a href="{{ Route('serie.index', 'index') }}">Voir tout les Séries</a> --}}
                 </nav>
-                <form action="{{ Route('movie.search') }}" method="GET">
+                <form action="{{ Route('search') }}" method="GET">
                     @csrf
                     <input type="text" name="search" placeholder="Rechercher un film">
                     <input type="submit" value="Rechercher">

@@ -68,6 +68,7 @@
                 @endphp
                 <section class="movies-box">
                     @foreach ($movies_data->results as $movie)
+                        @if ($movie->media_type === 'movie')
                             <div class="movie-card">
                                 <div class="content-card">
                                     <img src="https://image.tmdb.org/t/p/w500/.{{ $movie->poster_path }}" alt="">
@@ -98,6 +99,33 @@
                                     </div>
                                 </div>
                             </div>
+                        @elseif ($movie->media_type === 'tv')
+                            <?php                $serie = $movie; ?>
+                            <div class="movie-card">
+                                <div class="content-card">
+                                    <img src="https://image.tmdb.org/t/p/w500/.{{ $serie->poster_path }}" alt="">
+                                    <span class="shadow"></span>
+                                    <div class="content">
+                                        <h2> {{ $serie->name }} </h2>
+                                        <p class="date"> {{ $serie->first_air_date }}</p>
+                                        <p> {{ $serie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span></p>
+                                        {{-- <div class="simu-tag"></div> --}}
+                                        <div class="hex-tag">
+                                            @foreach ($serie->genre_ids as $genre)
+                                                <div class="tag">
+                                                    {{ $genre }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <form action="{{ Route('store', ['type' => 'tv']) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="title_id" value="{{ $serie->id }}">
+                                            <button class="movie-btn" type="submit" name="save_title">Ajouter à ma liste</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </section>
             @endif

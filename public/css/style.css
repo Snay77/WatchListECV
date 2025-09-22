@@ -662,6 +662,123 @@ select#genre_id option {
     gap: 24px;
 }
 
+/* Saisons & épisodes */
+.single-seasons {
+    margin-top: 24px;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0 0 24px 0;
+    background: linear-gradient(180deg, rgba(26, 58, 112, 0.12), rgba(26, 58, 112, 0.03));
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.single-seasons .seasons-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.seasons-title {
+    margin: 0 0 8px 0;
+}
+
+.seasons-accordion {
+    display: grid;
+    gap: 12px;
+}
+
+.season {
+    background: linear-gradient(180deg, rgba(26, 58, 112, 0.2), rgba(26, 58, 112, 0.06));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.season > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.season[open] > summary {
+    box-shadow: 0 0 18px rgba(77,163,255,.25);
+}
+
+.season-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: linear-gradient(180deg, rgba(26,58,112,.35), rgba(26,58,112,.15));
+    font-weight: 800;
+}
+
+.season-title {
+    font-weight: 700;
+}
+
+.season-arrow::after {
+    content: '\25BC';
+    transition: transform .2s ease;
+}
+
+.season[open] .season-arrow::after {
+    transform: rotate(180deg);
+}
+
+.episode-list {
+    display: grid;
+    gap: 10px;
+    padding: 0 12px 12px 12px;
+}
+
+.episode-card {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    align-items: stretch;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.episode-media {
+    background: rgba(0,0,0,.25);
+}
+
+.episode-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.episode-content {
+    padding: 10px 12px;
+}
+
+.episode-title {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+}
+
+.episode-meta {
+    margin: 0 0 6px 0;
+    color: var(--text-300);
+    font-size: 12px;
+}
+
+.episode-overview {
+    margin: 0;
+    color: var(--text-100);
+    opacity: .9;
+}
+
 .single-overview {
     background: linear-gradient(180deg, rgba(26, 58, 112, 0.15), rgba(26, 58, 112, 0.06));
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -845,6 +962,9 @@ select#genre_id option {
         flex-direction: column;
         align-items: center;
     }
+    .episode-card {
+        grid-template-columns: 120px 1fr;
+    }
 }
 
 @media (max-width: 480px) {
@@ -892,5 +1012,9 @@ select#genre_id option {
 
     .single-hero__poster {
         width: 180px;
+    }
+
+    .episode-card {
+        grid-template-columns: 100px 1fr;
     }
 }

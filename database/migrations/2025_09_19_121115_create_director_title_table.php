@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
+        // Schema::create('director_title', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->bigInteger('director_id');
+        //     $table->foreign('director_id')->references('id')->on('directors');
+        //     $table->bigInteger('title_id');
+        //     $table->foreign('title_id')->references('id_title')->on('titles');
+        // });
+
         Schema::create('director_title', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('director_id');
-            $table->foreign('director_id')->references('id')->on('directors');
-            $table->bigInteger('title_id');
-            $table->foreign('title_id')->references('id_title')->on('titles');
+            $table->foreignId('director_id')->constrained('directors')->cascadeOnDelete();
+            $table->foreignId('title_id')->constrained('titles')->cascadeOnDelete();
+            $table->timestamps();
         });
-
         Schema::enableForeignKeyConstraints();
     }
 
