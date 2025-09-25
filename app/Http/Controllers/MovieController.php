@@ -123,7 +123,11 @@ class MovieController extends Controller
     { // il faut aller faire le form
         if ($request->has('id_movie')) {
             $movie = Title::find($request->input('id_movie'));
-            $movie->seen = 1;
+            if ($movie->seen == 1) {
+                $movie->seen = 0;
+            } else {
+                $movie->seen = 1;
+            }
             $movie->save();
         }
         return Redirect::back();

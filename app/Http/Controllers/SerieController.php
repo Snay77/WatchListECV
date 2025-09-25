@@ -56,7 +56,11 @@ class SerieController extends Controller
     {
         if ($request->has('id_episode')) {
             $episode = Episode::find($request->input('id_episode'));
-            $episode->seen = 1;
+            if ($episode->seen == 1) {
+                $episode->seen = 0;
+            } else {
+                $episode->seen = 1;
+            }
             $episode->save();
         }
 

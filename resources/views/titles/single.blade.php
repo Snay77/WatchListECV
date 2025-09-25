@@ -29,7 +29,11 @@
             <div class="single-hero__info">
                 <h1 class="single-hero__title">{{ $title }}</h1>
                 @if ($movie_data->seen == 1)
-                    <i class='bxr  bxs-check-circle icon-check'></i>
+                    <form class="form-index" action="{{ Route('movie.seen') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_movie" value="{{ $movie_data->id }}">
+                            <i class='bxr  bxs-check-circle icon-check' onclick="this.closest('form').submit();"></i> 
+                    </form>
                 @else
                 <form class="form-index" action="{{ Route('movie.seen') }}" method="POST">
                     @csrf
@@ -173,7 +177,11 @@
                                                     @endif
                                                 </div>
                                                     @if ($episode->seen == 1)
-                                                        <i class='bxr  bxs-check-circle'  style='color:#00ffc6'></i> 
+                                                    <form class="form-index" action="{{ Route('serie.seen') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id_episode" value="{{ $episode_id }}">
+                                                            <i class='bxr  bxs-check-circle icon-check' onclick="this.closest('form').submit();"></i> 
+                                                    </form>
                                                     @else
                                                         <form class="form-index" action="{{ Route('serie.seen') }}" method="POST">
                                                             @csrf
@@ -181,7 +189,7 @@
                                                             <input type="hidden" name="all_ep_vu" value="{{ $movie_data->id }}">
                                                             @endif
                                                             <input type="hidden" name="id_episode" value="{{ $episode_id }}">
-                                                            <input class="episode-btn" type="submit" value="VU">
+                                                            <input class="movie-btn" type="submit" value="VU">
                                                         </form>
                                                     @endif
                                                 <div>

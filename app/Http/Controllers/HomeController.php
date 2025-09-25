@@ -10,21 +10,24 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function getList(Request $request) {
+    public function getList(Request $request)
+    {
         // $list_data = Movie::all();
         $genres = Genre::withCount('titles')->get();
 
-        $query = Title::where('seen', 0)->with('genres');
+        $titles = Title::orderBy('seen', 'desc')->get();
+
+        $query = Title::where('seen', 0)->with('genres')->with('episodes');
 
         if ($request->has('genre_id') && $request->genre_id != '') {
-        $query->whereHas('genres', function($q) use ($request) {
-            $q->where('genres.id', $request->genre_id);
-        });
-    }
-    $movies = $query->get();
-        
+            $query->whereHas('genres', function ($q) use ($request) {
+                $q->where('genres.id', $request->genre_id);
+            });
+        }
+        $movies = $query->get();
+
         // dd($list_data);
-        return view('welcome', ['movies_data' => $movies,'genres' => $genres,'selected_genre' => $request->genre_id ?? '']);
+        return view('welcome', ['movies_data' => $movies, 'titles_data' => $titles, 'genres' => $genres, 'selected_genre' => $request->genre_id ?? '']);
     }
 
     public function getSearch(Request $request)
