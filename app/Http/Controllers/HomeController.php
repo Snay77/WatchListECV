@@ -32,7 +32,7 @@ class HomeController extends Controller
         $query = $request->input('search');
         // $movies_data = $this->getCurlData('/search/movie?query=' . $query . '&include_adult=false&language=fr-FR&page=1');
         $movies_data = $this->getCurlData('/search/multi?query=' . $query . '&include_adult=false&language=fr-FR&page=1');
-        return view('common.list', [
+        return view('titles.search', [
             'movies_data' => $movies_data,
             'page_title' => 'Résultats de la recherche',
             'type' => 'search',

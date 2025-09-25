@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TitleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +42,13 @@ Route::controller(MovieController::class)->prefix('/movies')->name('movie.')->gr
 
 Route::get('search', [HomeController::class, 'getSearch'])->name('search');
 Route::post('store/{type}', [StoreController::class, 'storeTitle'])->name('store');
+Route::get('/list/{type}', [TitleController::class, 'getTitles'])->name('get');
+
 
 
 Route::controller(SerieController::class)->prefix('/series')->name('serie.')->group(function () { // on peut mettre ->prefix('/movie') avant le groupe | on peut aussi mettre ->name('blabla.')
     // Route::get('popular', 'getPopular')->name('popular'); // name('') et après {{ Route('') }}
-    // Route::post('seen', 'setSerieSeen')->name('seen');
+    Route::post('seen', 'setSerieSeen')->name('seen');
 
     // Route::get('search', 'getSearch')->name('search');
     Route::get('list/{type}', 'getSeries')->name('get');

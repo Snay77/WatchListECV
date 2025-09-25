@@ -3,38 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Episode;
-use App\Models\Title;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
-class SerieController extends Controller
+class TitleController extends Controller
 {
-
-    public function getSeries(Request $request, $type)
+    public function getTitles(Request $request, $type)
     {
-        // $series_data = $this->getCurlData("/genre/tv/119051?language=fr-FR&page=1");
+        // $series_data = $this->getCurlData("/movie/8452?language=fr-FR&page=1");
         // dd($series_data);
-        // $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
+        $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
+        // dd($genres_data);
+
 
         $type_name = [
-            'popular' => 'Série populaire',
-            'top_rated' => 'Série les mieux notés',
+            'popular' => 'Film populaire',
+            'top_rated' => 'Film les mieux notés',
         ];
 
         if ($type === 'popular') {
 
             $page = $request->query('page', 1);
+            $movies_data = $this->getCurlData("/movie/popular?language=fr-FR&page={$page}");
             $series_data = $this->getCurlData("/tv/popular?language=fr-FR&page={$page}");
         } elseif ($type === 'top_rated') {
+            $allMovies = [];
             $allSeries = [];
             $page = 1;
 
-            while (count($allSeries) < 100 && $page <= 5) {
+            while (count($allMovies) < 100 && $page <= 5) {
+                $data = $this->getCurlData("/movie/top_rated?language=fr-FR&page={$page}");
+                $allMovies = array_merge($allMovies, $data->results);
                 $data = $this->getCurlData("/tv/top_rated?language=fr-FR&page={$page}");
                 $allSeries = array_merge($allSeries, $data->results);
                 $page++;
             }
+
+            $movies_data = (object)[
+                'results' => array_slice($allMovies, 0, 100),
+                'page' => 1,
+                'total_pages' => 1,
+                
+            ];
 
             $series_data = (object)[
                 'results' => array_slice($allSeries, 0, 100),
@@ -44,28 +53,13 @@ class SerieController extends Controller
             ];
         }
 
-        return view('series.list', [
+        return view('titles.list', [
+            'movies_data' => $movies_data,
             'series_data' => $series_data,
             'page_title'  => $type_name[$type],
             'type'        => $type,
-            // 'genres_data' => $genres_data,
+            'genres_data' => $genres_data,
         ]);
-    }
-
-    public function setSerieSeen(Request $request)
-    {
-        if ($request->has('id_episode')) {
-            $episode = Episode::find($request->input('id_episode'));
-            $episode->seen = 1;
-            $episode->save();
-        }
-
-        if ($request->has('all_ep_vu')) {
-            $title = Title::find($request->input('all_ep_vu'));
-            $title->seen = 1;
-            $title->save();
-        }
-        return Redirect::back();
     }
 
     public function getCurlData($url)

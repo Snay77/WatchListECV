@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('overview')->nullable();
             $table->time('duration')->nullable();
+            $table->boolean('seen')->default(0);
             $table->string('image')->nullable();
             $table->timestamps();
         });

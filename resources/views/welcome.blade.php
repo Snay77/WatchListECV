@@ -37,7 +37,7 @@
                                 <h2> {{ $movie->name }} </h2>
                                 {{-- <p> {{ $movie->genres->name }}</p> --}}
                                 <p class="date"> {{ $movie->release_date }}</p>
-                                <p> {{ $movie->vote_average }} / 10<i class='bxr  bxs-star' style='color:#ffffff'></i> </span>
+                                <p><i class='bxr  bxs-star' style='color:#ffffff'></i> {{ $movie->vote_average }}%</span>
                                 </p>
                                 <div class="hex-tag">
                                     @foreach ($movie->genres as $genre)

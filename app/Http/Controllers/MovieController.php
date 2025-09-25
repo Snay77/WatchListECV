@@ -44,48 +44,60 @@ class MovieController extends Controller
     //     ]);
     // }
 
-    public function getMovies(Request $request, $type)
-    {
-        // $series_data = $this->getCurlData("/movie/8452?language=fr-FR&page=1");
-        // dd($series_data);
-        $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
-        // dd($genres_data);
+    // public function getMovies(Request $request, $type)
+    // {
+    //     // $series_data = $this->getCurlData("/movie/8452?language=fr-FR&page=1");
+    //     // dd($series_data);
+    //     $genres_data = $this->getCurlData('/genre/movie/list?language=fr-FR');
+    //     // dd($genres_data);
 
 
-        $type_name = [
-            'popular' => 'Film populaire',
-            'top_rated' => 'Film les mieux notés',
-        ];
+    //     $type_name = [
+    //         'popular' => 'Film populaire',
+    //         'top_rated' => 'Film les mieux notés',
+    //     ];
 
-        if ($type === 'popular') {
+    //     if ($type === 'popular') {
 
-            $page = $request->query('page', 1);
-            $movies_data = $this->getCurlData("/movie/popular?language=fr-FR&page={$page}");
-        } elseif ($type === 'top_rated') {
-            $allMovies = [];
-            $page = 1;
+    //         $page = $request->query('page', 1);
+    //         $movies_data = $this->getCurlData("/movie/popular?language=fr-FR&page={$page}");
+    //         $series_data = $this->getCurlData("/tv/popular?language=fr-FR&page={$page}");
+    //     } elseif ($type === 'top_rated') {
+    //         $allMovies = [];
+    //         $allSeries = [];
+    //         $page = 1;
 
-            while (count($allMovies) < 100 && $page <= 5) {
-                $data = $this->getCurlData("/movie/top_rated?language=fr-FR&page={$page}");
-                $allMovies = array_merge($allMovies, $data->results);
-                $page++;
-            }
+    //         while (count($allMovies) < 100 && $page <= 5) {
+    //             $data = $this->getCurlData("/movie/top_rated?language=fr-FR&page={$page}");
+    //             $allMovies = array_merge($allMovies, $data->results);
+    //             $data = $this->getCurlData("/tv/top_rated?language=fr-FR&page={$page}");
+    //             $allSeries = array_merge($allSeries, $data->results);
+    //             $page++;
+    //         }
 
-            $movies_data = (object)[
-                'results' => array_slice($allMovies, 0, 100),
-                'page' => 1,
-                'total_pages' => 1,
+    //         $movies_data = (object)[
+    //             'results' => array_slice($allMovies, 0, 100),
+    //             'page' => 1,
+    //             'total_pages' => 1,
                 
-            ];
-        }
+    //         ];
 
-        return view('movies.list', [
-            'movies_data' => $movies_data,
-            'page_title'  => $type_name[$type],
-            'type'        => $type,
-            'genres_data' => $genres_data,
-        ]);
-    }
+    //         $series_data = (object)[
+    //             'results' => array_slice($allSeries, 0, 100),
+    //             'page' => 1,
+    //             'total_pages' => 1,
+
+    //         ];
+    //     }
+
+    //     return view('movies.list', [
+    //         'movies_data' => $movies_data,
+    //         'series_data' => $series_data,
+    //         'page_title'  => $type_name[$type],
+    //         'type'        => $type,
+    //         'genres_data' => $genres_data,
+    //     ]);
+    // }
 
     public function getMovie($type)
     {
@@ -93,7 +105,7 @@ class MovieController extends Controller
         $movie = Title::with('genres')->with('casts')->with('directors')->find($type);
         // dd($type == $movie->id);
         if (!empty($movie)) {
-            return view('movies.single', ['movie_data' => $movie]);
+            return view('titles.single', ['movie_data' => $movie]);
         } else {
             return Redirect::back()->with('movie_not_find', "Le Film n'est pas disponible");
         }

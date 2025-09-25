@@ -734,6 +734,7 @@ select#genre_id option {
     display: grid;
     gap: 10px;
     padding: 0 12px 12px 12px;
+    margin-top: 20px;
 }
 
 .episode-card {
@@ -877,6 +878,23 @@ select#genre_id option {
     margin: 2px 0 0 0;
     font-size: 12px;
     color: var(--text-300);
+}
+
+.icon-check {
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.icon-check {
+    font-size: 32px;
+    cursor: pointer;
+    color: #00ffc6;
+    transition: color .25s ease-in-out;
+}
+
+.icon-check:hover {
+    color: rgb(250, 73, 73);
+    transition: color .25s ease-in-out;
 }
 
 @media (max-width: 1024px) {

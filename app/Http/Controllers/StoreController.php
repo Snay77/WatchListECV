@@ -30,7 +30,7 @@ class StoreController extends Controller
 
             $title = new Title;
             $title->id_movie_tmdb = $title_data->id;
-            $title->vote_average = $title_data->vote_average;
+            $title->vote_average = $title_data->vote_average*10;
             $title->image = $path;
             $title->desc = $title_data->overview;
             if ($type === 'movie') {

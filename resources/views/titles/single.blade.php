@@ -15,6 +15,7 @@
         $director = collect($directors)->first();
         $casts = collect($movie_data->casts ?? [])->take(9);
         $overview = $movie_data->desc ?? $movie_data->overview ?? null;
+        $nbrEpVu = 0;
     @endphp
 
     <section class="single-hero" style="--hero-bg: url('{{ $backdropUrl }}')">
@@ -27,9 +28,18 @@
             </div>
             <div class="single-hero__info">
                 <h1 class="single-hero__title">{{ $title }}</h1>
+                @if ($movie_data->seen == 1)
+                    <i class='bxr  bxs-check-circle icon-check'></i>
+                @else
+                <form class="form-index" action="{{ Route('movie.seen') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_movie" value="{{ $movie_data->id }}">
+                    <input class="movie-btn" type="submit" value="VU">
+                </form>
+                @endif
                 <div class="single-hero__meta">
                     @if($vote)
-                        <span class="rating"><i class='bx bxs-star'></i> {{ number_format($vote, 1) }} / 10</span>
+                        <span class="rating"><i class='bx bxs-star'></i> {{ number_format($vote, 1) }}%</span>
                     @endif
                     @if($releaseDate)
                         <span class="dot">•</span>
@@ -59,14 +69,15 @@
                     @php
                         $rawDirImg = isset($director->image) ? $director->image : (isset($director['image']) ? $director['image'] : (isset($director->profile_path) ? $director->profile_path : (isset($director['profile_path']) ? $director['profile_path'] : null)));
                         $dirImg = $rawDirImg;
-                        if($dirImg && !\Illuminate\Support\Str::startsWith($dirImg, 'http')) {
+                        if ($dirImg && !\Illuminate\Support\Str::startsWith($dirImg, 'http')) {
                             $dirImg = 'https://image.tmdb.org/t/p/w185' . (\Illuminate\Support\Str::startsWith($dirImg, '/') ? $dirImg : '/' . $dirImg);
                         }
                     @endphp
                     @if($dirImg)
                         <img src="{{ $dirImg }}" alt="{{ $director->name ?? $director['name'] ?? 'Réalisateur' }}">
                     @else
-                        <div class="avatar-fallback">{{ \Illuminate\Support\Str::substr(($director->name ?? $director['name'] ?? 'R'),0,1) }}</div>
+                        <div class="avatar-fallback">
+                            {{ \Illuminate\Support\Str::substr(($director->name ?? $director['name'] ?? 'R'), 0, 1) }}</div>
                     @endif
                 </div>
                 <div>
@@ -85,7 +96,7 @@
                         $castImg = is_object($cast)
                             ? ($cast->image ?? $cast->profile_path ?? null)
                             : ($cast['image'] ?? $cast['profile_path'] ?? null);
-                        if($castImg && !\Illuminate\Support\Str::startsWith($castImg, 'http')) {
+                        if ($castImg && !\Illuminate\Support\Str::startsWith($castImg, 'http')) {
                             $castImg = 'https://image.tmdb.org/t/p/w185' . (\Illuminate\Support\Str::startsWith($castImg, '/') ? $castImg : '/' . $castImg);
                         }
                     @endphp
@@ -94,7 +105,7 @@
                             @if($castImg)
                                 <img src="{{ $castImg }}" alt="{{ $castName }}">
                             @else
-                                <div class="avatar-fallback">{{ \Illuminate\Support\Str::substr($castName,0,1) }}</div>
+                                <div class="avatar-fallback">{{ \Illuminate\Support\Str::substr($castName, 0, 1) }}</div>
                             @endif
                         </div>
                         <p class="cast-card__name">{{ $castName }}</p>
@@ -110,7 +121,7 @@
     @php
         $isSeries = isset($movie_data->is_movie) ? !$movie_data->is_movie : false;
         $episodes = collect($movie_data->episodes ?? []);
-        $episodesBySeason = $episodes->groupBy(function($ep){
+        $episodesBySeason = $episodes->groupBy(function ($ep) {
             return is_object($ep) ? ($ep->season ?? 0) : ($ep['season'] ?? 0);
         })->sortKeys();
     @endphp
@@ -120,10 +131,10 @@
                 <h2 class="seasons-title">Saisons & Épisodes</h2>
                 <div class="seasons-accordion">
                     @foreach ($episodesBySeason as $seasonNumber => $seasonEpisodes)
-                        @php $seasonLabel = 'Saison ' . (string)$seasonNumber; @endphp
+                        @php $seasonLabel = 'Saison ' . (string) $seasonNumber; @endphp
                         <details class="season">
                             <summary>
-                                <span class="season-badge">S{{ str_pad((string)($seasonNumber ?? 0), 2, '0', STR_PAD_LEFT) }}</span>
+                                <span class="season-badge">S{{ str_pad((string) ($seasonNumber ?? 0), 2, '0', STR_PAD_LEFT) }}</span>
                                 <span class="season-title">{{ $seasonLabel }}</span>
                                 <span class="season-arrow" aria-hidden="true"></span>
                             </summary>
@@ -131,11 +142,16 @@
                                 <div class="episode-list">
                                     @foreach ($seasonEpisodes as $episode)
                                         @php
+                                            if($episode->seen == 1) {
+                                                $nbrEpVu = $nbrEpVu + 1;
+                                            }
+                                            $episode_id = $episode->id;
                                             $epName = is_object($episode) ? ($episode->name ?? 'Épisode') : ($episode['name'] ?? 'Épisode');
+                                            $epNbr = $episode->episode_number;
                                             $epOverview = is_object($episode) ? ($episode->overview ?? null) : ($episode['overview'] ?? null);
                                             $epRuntime = is_object($episode) ? ($episode->duration ?? null) : ($episode['duration'] ?? null);
                                             $epImg = is_object($episode) ? ($episode->image ?? null) : ($episode['image'] ?? null);
-                                            if($epImg && !\Illuminate\Support\Str::startsWith($epImg, 'http')) {
+                                            if ($epImg && !\Illuminate\Support\Str::startsWith($epImg, 'http')) {
                                                 $epImg = 'https://image.tmdb.org/t/p/w300' . (\Illuminate\Support\Str::startsWith($epImg, '/') ? $epImg : '/' . $epImg);
                                             }
                                         @endphp
@@ -146,13 +162,30 @@
                                                 </div>
                                             @endif
                                             <div class="episode-content">
-                                                <h3 class="episode-title">{{ $epName }}</h3>
-                                                @if($epRuntime)
-                                                    <p class="episode-meta">Durée: {{ is_string($epRuntime) ? $epRuntime : ($epRuntime . ' min') }}</p>
-                                                @endif
-                                                @if($epOverview)
-                                                    <p class="episode-overview">{{ $epOverview }}</p>
-                                                @endif
+                                                <div>
+                                                    <h3 class="episode-title">{{ $epNbr }}. {{ $epName }}</h3>
+                                                    @if($epRuntime)
+                                                        <p class="episode-meta">Durée:
+                                                            {{ is_string($epRuntime) ? $epRuntime : ($epRuntime . ' min') }}</p>
+                                                    @endif
+                                                    @if($epOverview)
+                                                        <p class="episode-overview">{{ $epOverview }}</p>
+                                                    @endif
+                                                </div>
+                                                    @if ($episode->seen == 1)
+                                                        <i class='bxr  bxs-check-circle'  style='color:#00ffc6'></i> 
+                                                    @else
+                                                        <form class="form-index" action="{{ Route('serie.seen') }}" method="POST">
+                                                            @csrf
+                                                            @if (count($episodes) == $nbrEpVu+1)
+                                                            <input type="hidden" name="all_ep_vu" value="{{ $movie_data->id }}">
+                                                            @endif
+                                                            <input type="hidden" name="id_episode" value="{{ $episode_id }}">
+                                                            <input class="episode-btn" type="submit" value="VU">
+                                                        </form>
+                                                    @endif
+                                                <div>
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -164,5 +197,7 @@
             </div>
         </section>
     @endif
-
+{{-- @php
+dd($nbrEpVu)
+@endphp --}}
 @endsection
